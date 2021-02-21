@@ -49,18 +49,10 @@
 /* USER CODE BEGIN PV */
 
 extern char rxData[40];
-extern uint32_t adcArr[3];
+extern uint32_t adcData[3];
 extern UART_HandleTypeDef huart3;
 extern TIM_HandleTypeDef htim4;
-extern volatile bool dcFlag;
 
-volatile uint16_t throttleTim = 0;
-volatile uint8_t batStat = 0;
-volatile uint8_t tim3Cnt = 0;
-volatile uint16_t dcCnt = 0;
-volatile uint8_t tim4Cnt = 0;
-volatile const uint16_t throttleIdle = 2636;
-volatile uint64_t tim3Sum;
 
 /* USER CODE END PV */
 
@@ -288,34 +280,6 @@ void TIM3_IRQHandler(void)
   HAL_TIM_IRQHandler(&htim3);
   /* USER CODE BEGIN TIM3_IRQn 1 */
 	
-	//throttleTim = throttleConversion(rxData);
-	tim3Sum += throttleConversion(rxData);
-	tim3Cnt++;
-	
-	if(tim3Cnt >= FILTER_VAL)
-	{
-		throttleTim = tim3Sum / FILTER_VAL;
-		tim3Cnt = 0;
-		tim3Sum = 0;
-		
-		if(!(dcFlag)) 
-		{
-			htim4.Instance -> CCR1 = (throttleTim * 1.25);
-			dcCnt = 0;
-		}
-	}
-	
-	if(dcFlag)
-	{
-		dcCnt++;	
-		if(dcCnt >= DC_HOLD) htim4.Instance -> CCR1 = throttleIdle;
-		else htim4.Instance -> CCR1 = (throttleTim * 1.25);
-		
-		if(dcCnt > 65500) dcCnt = 65500;
-	}
-	
-	if((htim4.Instance -> CCR1) > 3500) htim4.Instance -> CCR1 = 3500;
-	if((htim4.Instance -> CCR1) < 2000) htim4.Instance -> CCR1 = 2000;
   /* USER CODE END TIM3_IRQn 1 */
 }
 
@@ -331,7 +295,7 @@ void TIM4_IRQHandler(void)
   /* USER CODE BEGIN TIM4_IRQn 1 */
 	static uint8_t batStat;
 	
-	batStat = batPercentage(adcArr[0]);
+	batStat = batPercentage(adcData[0]);
 	//if(!(batStat)) htim4.Instance -> CCR1 = throttleIdle;
 	
 	

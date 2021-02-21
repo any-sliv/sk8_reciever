@@ -1,0 +1,4 @@
+app.c:46:6:AppInit	104	static
+app.c:62:6:AppLoop	8	static
+app.c:75:13:SetThrottle	24	static
+app.c:107:17:throttleConversion	24	static

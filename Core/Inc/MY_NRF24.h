@@ -198,6 +198,5 @@ void printFIFOstatus(void);
 void setStatLed(void);
 void resetStatLed(void);
 uint8_t batPercentage(uint16_t adcVal);
-uint16_t throttleConversion(char adc[]);
 uint16_t filter(uint16_t val, uint8_t step);
 

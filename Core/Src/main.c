@@ -25,6 +25,7 @@
 /* USER CODE BEGIN Includes */
 
 #include "MY_NRF24.h"
+#include "app.h"
 
 /* USER CODE END Includes */
 
@@ -63,8 +64,6 @@ char rxData[40];
 
 volatile bool dcFlag = false;
 
-uint64_t RxpipeAddress = 0x11223344AA;
-uint32_t adcArr[3];
 
 /*
 ---   ADC   ---
@@ -137,32 +136,6 @@ int main(void)
   /* Initialize interrupts */
   MX_NVIC_Init();
   /* USER CODE BEGIN 2 */
-
-	HAL_ADC_Start_DMA(&hadc1, adcArr, 1);
-
-	
-	nrf24_DebugUART_Init(huart2);
-	NRF24_begin(GPIOB, GPIO_PIN_0, GPIO_PIN_1, hspi1);
-	NRF24_startListening();
-	NRF24_openReadingPipe(0, RxpipeAddress);
-	NRF24_setAutoAck(true);
-	NRF24_setPayloadSize(32);
-	NRF24_setChannel(92);
-	NRF24_setDataRate(RF24_250KBPS);
-	NRF24_setPALevel(RF24_PA_0dB);
-	NRF24_setCRCLength(RF24_CRC_16);
-	NRF24_setRetries(15,5);
-	
-	
-	printRadioSettings();
-	HAL_ADCEx_Calibration_Start(&hadc1);
-	
-	HAL_TIM_PWM_Start_IT(&htim4, TIM_CHANNEL_1);
-	HAL_TIM_Base_Start(&htim3);
-	HAL_TIM_Base_Start_IT(&htim3);
-	
-	HAL_Delay(100);
-	resetStatLed();
 	
   /* USER CODE END 2 */
 
@@ -174,26 +147,7 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 		
-		if(NRF24_available())
-		{
-			setStatLed();
-			NRF24_read(rxData, 32);
-			dcFlag = false;
-			
-		}else{
-			dcFlag = true;
-			resetStatLed();
-		}
-
-		//OGARNIJ zeby nrf read sie wykonywal bez przerw
-		//+ retries dla transmitera, zmniejsz delay, zwieksz liczbe powtorzen UPDATE 10.06 JEST LEPIEJ
-		//dodano podtrzymywanie gazu przez 100ms po utracie radia
-		//DODAJ odrzucanie wartosci gazu w przypadku sporej roznicy w krotkim czasie
-		
-		sprintf(srvMsg, "%u", htim4.Instance->CCR1);
-		HAL_UART_Transmit(&huart2, (uint8_t *) srvMsg, 32, 1);
-		HAL_UART_Transmit(&huart2, (uint8_t *) "\n\r", 32, 1);
-		//NRF24_DelayMicroSeconds(500); //blocking delay
+	AppLoop();			// <------ Everything is here!
   }
   /* USER CODE END 3 */
 }

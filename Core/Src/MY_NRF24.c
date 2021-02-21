@@ -962,15 +962,6 @@ uint8_t batPercentage(uint16_t adcVal)
 	if( (adcVal < 3524) )	return 0;				//below opertaing voltage!!
 }
 
-uint16_t throttleConversion(char adc[])
-{
-	uint16_t thr = 0;
-	thr += ((uint8_t)adc[0] - '0') * 1000;
-	thr += ((uint8_t)adc[1] - '0') * 100;
-	thr += ((uint8_t)adc[2] - '0') * 10;
-	thr += ((uint8_t)adc[3] - '0') * 1;
-	return thr;
-}
 
 uint16_t filter(uint16_t val, uint8_t step)
 {
