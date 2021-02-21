@@ -7,7 +7,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
   * All rights reserved.</center></h2>
   *
   * This software component is licensed by ST under BSD 3-Clause license,
@@ -60,14 +60,22 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define LED_STAT_Pin GPIO_PIN_0
+#define LED_STAT_GPIO_Port GPIOA
+#define ADC_EXT_Pin GPIO_PIN_1
+#define ADC_EXT_GPIO_Port GPIOA
 #define NRF24_CSN_Pin GPIO_PIN_0
 #define NRF24_CSN_GPIO_Port GPIOB
 #define NRF24_CE_Pin GPIO_PIN_1
 #define NRF24_CE_GPIO_Port GPIOB
-#define SHUTDOWN_12V_Pin GPIO_PIN_2
-#define SHUTDOWN_12V_GPIO_Port GPIOB
-#define LED_Pin GPIO_PIN_9
-#define LED_GPIO_Port GPIOA
+#define SHTDWN_12V_Pin GPIO_PIN_11
+#define SHTDWN_12V_GPIO_Port GPIOB
+#define EXT_MOSFET3_Pin GPIO_PIN_12
+#define EXT_MOSFET3_GPIO_Port GPIOB
+#define EXT_MOSFET2_Pin GPIO_PIN_13
+#define EXT_MOSFET2_GPIO_Port GPIOB
+#define EXT_MOSFET1_Pin GPIO_PIN_14
+#define EXT_MOSFET1_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
